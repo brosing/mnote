@@ -1,7 +1,3 @@
-# Tauri + SvelteKit + TypeScript
+# mnote
 
-This template should help get you started developing with Tauri, SvelteKit and TypeScript in Vite.
-
-## Recommended IDE Setup
-
-[VS Code](https://code.visualstudio.com/) + [Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer).
+Inspired by freewrite, but I still love note, so I am trying to stay in the middle. I love svelte as well, that's why this app build on top of tauri & svelte. ✌️
