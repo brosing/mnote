@@ -1,22 +1,14 @@
-<!-- 
-<svelte:head>
-	<link
-		rel="stylesheet"
-		href="https://unpkg.com/quill@2.0.2/dist/quill.snow.css"
-		crossorigin
-	/>
-</svelte:head> -->
-
 <script lang="ts">
   import { onMount } from "svelte";
-  import Quill, { Delta } from "quill";
+  import { PersistedState } from "runed";
+  import Quill from "quill";
+  // @ts-ignore
   import QuillMarkdown from "quilljs-markdown";
   import "quill/dist/quill.bubble.css";
 
   let quillEditor: Quill;
   let editorElement: HTMLDivElement;
-
-  export let content = "";
+  const content = new PersistedState('note', '');
 
   onMount(() => {
     quillEditor = new Quill(editorElement, {
@@ -38,12 +30,12 @@
 
     // Set initial content
     if (content) {
-      quillEditor.root.innerHTML = content;
+      quillEditor.root.innerHTML = content.current;
     }
 
     // Handle content changes
     quillEditor.on("text-change", () => {
-      content = quillEditor.root.innerHTML;
+      content.current = quillEditor.root.innerHTML;
     });
     quillEditor.clipboard.addMatcher(Node.ELEMENT_NODE, function (_, delta) {
       delta.ops = delta.ops.map((_) => ({
@@ -66,8 +58,13 @@
     @apply h-full w-full;
   }
 
+  :global(.ql-editor::-webkit-scrollbar) { 
+    display: none;  /* Safari and Chrome */
+  }
   :global(.ql-editor) {
     font-size: 1rem;
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
   }
   :global(.ql-editor ol) {
     padding-left: 0;
