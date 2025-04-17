@@ -6,12 +6,12 @@
   import QuillMarkdown from "quilljs-markdown";
   import "quill/dist/quill.bubble.css";
 
-  let quillEditor: Quill;
+  let quill: Quill;
   let editorElement: HTMLDivElement;
-  const content = new PersistedState('note', '');
+  const content = new PersistedState("note", "");
 
   onMount(() => {
-    quillEditor = new Quill(editorElement, {
+    quill = new Quill(editorElement, {
       theme: "bubble",
       modules: {
         toolbar: [
@@ -26,24 +26,36 @@
     });
 
     // Initialize markdown support
-    new QuillMarkdown(quillEditor);
+    new QuillMarkdown(quill);
 
     // Set initial content
     if (content) {
-      quillEditor.root.innerHTML = content.current;
+      quill.root.innerHTML = content.current;
     }
 
     // Handle content changes
-    quillEditor.on("text-change", () => {
-      content.current = quillEditor.root.innerHTML;
+    quill.on("text-change", () => {
+      const selection = quill.getSelection();
+      if (!selection || selection.length > 0) return;
+
+      const [line] = quill.getLine(selection.index);
+      const lineText = line?.domNode?.innerText || '';
+      const isLineEmpty = lineText.trim() === '';
+
+      if (isLineEmpty) {
+        // Remove heading format by setting it to null (paragraph)
+        quill.formatLine(selection.index, 1, 'header', false);
+      }
+
+      content.current = quill.root.innerHTML;
     });
-    quillEditor.clipboard.addMatcher(Node.ELEMENT_NODE, function (_, delta) {
+    quill.clipboard.addMatcher(Node.ELEMENT_NODE, function (_, delta) {
       delta.ops = delta.ops.map((_) => ({
         insert: _.insert,
       }));
       return delta;
     });
-    quillEditor.format('size', '20px');
+    quill.format("size", "20px");
   });
 </script>
 
@@ -58,13 +70,13 @@
     @apply h-full w-full;
   }
 
-  :global(.ql-editor::-webkit-scrollbar) { 
-    display: none;  /* Safari and Chrome */
+  :global(.ql-editor::-webkit-scrollbar) {
+    display: none; /* Safari and Chrome */
   }
   :global(.ql-editor) {
     font-size: 1rem;
-    -ms-overflow-style: none;  /* Internet Explorer 10+ */
-    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+    scrollbar-width: none; /* Firefox */
   }
   :global(.ql-editor ol) {
     padding-left: 0;
