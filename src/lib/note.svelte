@@ -109,6 +109,7 @@
   }
   :global(.ql-editor ol) {
     padding-left: 0;
+    margin-top: 0.4rem;
   }
   :global(.ql-bubble .ql-picker.ql-expanded .ql-picker-options) {
     margin-top: 1rem;
@@ -116,17 +117,42 @@
     border-radius: 10px;
     padding: 0.5rem 1rem;
   }
+  :global(.ql-editor li) {
+    display: flex;
+    flex-direction: row;
+    padding-left: 0;
+  }
+  :global(.ql-editor li > .ql-ui) {
+    position: relative;
+    height: 1.6rem;
+    width: 1.6rem;
+    flex-shrink: 0;
+  }
+  :global(.ql-editor li > .ql-ui:before) {
+    position: absolute;
+    z-index: -10;
+    color: black;
+  }
+  :global(.ql-editor li[data-list="ordered"] > .ql-ui:before) {
+    margin-left: 0;
+    text-align: center;
+  }
+  :global(.ql-editor li[data-list="bullet"] > .ql-ui:before) {
+    margin-left: 0;
+    text-align: center;
+    font-size: 1.6rem;
+    margin-top: -0.4rem;
+    margin-left: -0.3rem;
+  }
   :global(.ql-editor li[data-list="checked"] > .ql-ui:before),
   :global(.ql-editor li[data-list="unchecked"] > .ql-ui:before) {
     font-size: 1.6rem;
     margin-top: -0.6rem;
-    margin-left: -2.2rem;
-    color: black;
+    margin-left: -0.6rem;
   }
 
   @media (prefers-color-scheme: dark) {
-    :global(.ql-editor li[data-list="checked"] > .ql-ui:before),
-    :global(.ql-editor li[data-list="unchecked"] > .ql-ui:before) {
+    :global(.ql-editor li > .ql-ui:before) {
       color: white;
     }
   }
