@@ -1,31 +1,40 @@
 <script lang="ts">
-  import { onDestroy } from 'svelte';
+  import { onDestroy } from "svelte";
 
-  let { isFocus = $bindable() } = $props();
-  let minutes = $state(25);
-  let seconds = $state(0);
+  type Props = {
+    isFocus: boolean;
+    focusTime: number;
+    defaultFocusTime: number;
+  };
+
+  let {
+    isFocus = $bindable(),
+    focusTime = $bindable(),
+    defaultFocusTime,
+  }: Props = $props();
+
   let interval: ReturnType<typeof setInterval> | null = null;
 
   function formatTime(n: number) {
-    return n.toString().padStart(2, '0');
+    return n.toString().padStart(2, "0");
   }
 
   function tick() {
-    if (minutes === 0 && seconds === 0) {
+    if (focusTime <= 0) {
       isFocus = false;
       clearInterval(interval!);
       interval = null;
       return;
     }
-    if (seconds === 0) {
-      minutes -= 1;
-      seconds = 59;
-    } else {
-      seconds -= 1;
-    }
+    focusTime -= 1;
   }
 
   function toggleTimer() {
+    if (focusTime <= 0) {
+      resetTimer();
+      return;
+    }
+
     if (isFocus) {
       isFocus = false;
       clearInterval(interval!);
@@ -44,17 +53,19 @@
     isFocus = false;
     clearInterval(interval!);
     interval = null;
-    minutes = 25;
-    seconds = 0;
+    focusTime = defaultFocusTime;
   }
 
   onDestroy(() => {
     if (interval) clearInterval(interval);
   });
+
+  let minutes = $derived(Math.floor(focusTime / 60));
+  let seconds = $derived(focusTime % 60);
 </script>
 
 <button
-  class={`z-20 flex-center select-none cursor-pointer font-mono hover:opacity-100 ${isFocus ? 'opacity-100' : 'opacity-40'}`}
+  class={`z-20 flex-center select-none cursor-pointer font-mono hover:opacity-100 ${isFocus ? "opacity-100" : "opacity-40"}`}
   onclick={toggleTimer}
   ondblclick={resetTimer}
   tabindex="0"
