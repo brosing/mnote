@@ -13,6 +13,8 @@
     "windows": [
       {
         "title": "mnote",
+        "minHeight": 600,
+        "minWidth": 900,
         "hiddenTitle": true,
         "titleBarStyle": "Overlay"
       }

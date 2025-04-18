@@ -1,17 +1,17 @@
 <script lang="ts">
   import { onDestroy } from "svelte";
+  import { Slider } from "bits-ui";
+  import cn from "clsx";
 
   type Props = {
     isFocus: boolean;
-    focusTime: number;
-    defaultFocusTime: number;
   };
 
-  let {
-    isFocus = $bindable(),
-    focusTime = $bindable(),
-    defaultFocusTime,
-  }: Props = $props();
+  let { isFocus = $bindable() }: Props = $props();
+
+  const DEFAULT_FOCUS_TIME = 25 * 60;
+  const MAX_FOCUS_TIME = 40 * 60;
+  let focusTime = $state(DEFAULT_FOCUS_TIME);
 
   let interval: ReturnType<typeof setInterval> | null = null;
 
@@ -53,7 +53,7 @@
     isFocus = false;
     clearInterval(interval!);
     interval = null;
-    focusTime = defaultFocusTime;
+    focusTime = DEFAULT_FOCUS_TIME;
   }
 
   onDestroy(() => {
@@ -64,12 +64,46 @@
   let seconds = $derived(focusTime % 60);
 </script>
 
-<button
-  class={`z-20 flex-center select-none cursor-pointer font-mono hover:opacity-100 ${isFocus ? "opacity-100" : "opacity-40"}`}
-  onclick={toggleTimer}
-  ondblclick={resetTimer}
-  tabindex="0"
-  aria-label="Pomodoro Timer"
->
-  {formatTime(minutes)}:{formatTime(seconds)}
-</button>
+<div class="flex gap-4 items-center w-60">
+  <button
+    class={`z-20 flex-center select-none cursor-pointer transition-transform active:scale-110 font-mono ${isFocus ? "opacity-100" : "opacity-50"}`}
+    onclick={toggleTimer}
+    ondblclick={resetTimer}
+    tabindex="0"
+    aria-label="Pomodoro Timer"
+  >
+    {formatTime(minutes)}:{formatTime(seconds)}
+  </button>
+
+  <Slider.Root
+    type="single"
+    value={focusTime}
+    onValueChange={(val) => {
+      if (isFocus) return;
+      focusTime = val;
+    }}
+    max={MAX_FOCUS_TIME}
+    step={60}
+    disabled={isFocus}
+    class={cn(
+      "relative flex w-full touch-none select-none items-center",
+      isFocus ? "opacity-100" : "opacity-50"
+    )}
+  >
+    {#snippet children()}
+      <span
+        class="dark:bg-zinc-500 relative h-1 w-full grow cursor-pointer overflow-hidden rounded-full"
+      >
+        <Slider.Range class="dark:bg-zinc-100 absolute h-full" />
+      </span>
+      <Slider.Thumb
+        index={0}
+        disabled={isFocus}
+        class={cn(
+          "dark:bg-zinc-100 block size-[8px] rounded-full transition-transform hover:scale-[1.2] active:scale-[1.2] focus:outline-none",
+          isFocus ? "cursor-not-allowed" : "cursor-pointer"
+        )}
+      />
+    {/snippet}
+  </Slider.Root>
+</div>

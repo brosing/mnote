@@ -104,8 +104,8 @@
     font-size: 1rem;
     -ms-overflow-style: none; /* Internet Explorer 10+ */
     scrollbar-width: none; /* Firefox */
-    padding-top: 80px;
-    padding-bottom: 80px;
+    padding-top: 140px;
+    padding-bottom: 140px;
   }
   :global(.ql-editor ol) {
     padding-left: 0;
