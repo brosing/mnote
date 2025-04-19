@@ -99,12 +99,15 @@
 
   $effect(() => {
     // handle empty content cause by new note
-    if (content.trim() === '') quill.root.innerHTML = '';
+    if (content.trim() === '') {
+      quill.root.innerHTML = '';
+    }
   })
 
   watch(() => noteID, () => {
-    // handle note change
     quill.root.innerHTML = content;
+    // handle cursor thrown out of content on note change
+    quill.setSelection(content.length, 0);
   });
 </script>
 
@@ -120,8 +123,7 @@
     font-size: 1rem;
     -ms-overflow-style: none; /* Internet Explorer 10+ */
     scrollbar-width: none; /* Firefox */
-    padding-top: 140px;
-    padding-bottom: 140px;
+    padding: 140px 0;
   }
   :global(.ql-editor ol) {
     padding-left: 0;

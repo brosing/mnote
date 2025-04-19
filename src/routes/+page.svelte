@@ -33,7 +33,7 @@
 <div class="drag-region" data-tauri-drag-region></div>
 
 <!-- Container -->
-<div class="flex gap-12 h-screen overflow-hidden">
+<div class="flex gap-12 h-screen overflow-x-hidden">
   <!-- Folder & History dialog 336 = 320 + 16 -->
   <div class="flex-1 group relative">
     <div
