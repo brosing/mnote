@@ -65,10 +65,11 @@
   <!-- Folder & History dialog 336 = 320 + 16 -->
   <div class="flex-1 group relative">
     <div
-      class={`
-      h-[calc(100%-52px)] w-80 top-9 -left-80 group-hover:translate-x-[336px]
-      bg-zinc-800 p-4 rounded-lg absolute transition duration-200 ease-out z-10
-    `}
+      class={cn(
+        "h-[calc(100%-52px)] w-80 absolute top-9 -left-80",
+        isFocus ? "" : "group-hover:translate-x-[336px]",
+        "bg-zinc-800 p-4 rounded-lg transition duration-200 ease-out z-10"
+      )}
     >
       <h3 class="font-bold text-zinc-200 mb-2">History</h3>
       {#each history as item (item.id)}
@@ -129,10 +130,11 @@
   <!-- Options dialog -->
   <div class="flex-1 group relative">
     <div
-      class={`
-      h-[calc(100%-52px)] w-80 top-9 -right-80 group-hover:-translate-x-[336px]
-      bg-zinc-800 p-4 rounded-lg absolute transition duration-200 ease-out z-10
-    `}
+      class={cn(
+        "h-[calc(100%-52px)] w-80 absolute top-9 -right-80",
+        isFocus ? "" : "group-hover:-translate-x-[336px]",
+        "bg-zinc-800 p-4 rounded-lg transition duration-200 ease-out z-10"
+      )}
     >
       Options
     </div>

@@ -3,7 +3,7 @@ Inspired by freewrite, but I still love note, so I am trying to stay in the midd
 
 ## Bottom Bar - Menu
 - [x] focus mode
-- [ ] new file
+- [x] new file
 - [ ] lofi player
 
 ## Right Bar - Folder & History
