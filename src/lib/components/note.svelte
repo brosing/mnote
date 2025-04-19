@@ -1,15 +1,21 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { PersistedState } from "runed";
   import Quill from "quill";
   // @ts-ignore
   import QuillMarkdown from "quilljs-markdown";
   import "quill/dist/quill.bubble.css";
+  import { watch } from "runed";
 
-  let { isFocus } = $props();
   let quill: Quill;
   let editorElement: HTMLDivElement;
-  const content = new PersistedState("note", "");
+
+  interface Props {
+    content: string;
+    handleContent: (content: string) => void;
+    noteID: string;
+  }
+
+  let { content, handleContent, noteID }: Props = $props()
 
   onMount(() => {
     quill = new Quill(editorElement, {
@@ -28,7 +34,7 @@
     // Initialize markdown support
     new QuillMarkdown(quill);
     if (content) {
-      quill.root.innerHTML = content.current;
+      quill.root.innerHTML = content;
     }
 
     // Handle content changes
@@ -44,7 +50,7 @@
         // Remove heading format by setting it to null (paragraph)
         quill.formatLine(selection.index, 1, "header", false);
       }
-      content.current = quill.root.innerHTML;
+      handleContent(quill.root.innerHTML);
 
       // Uncomment if the feature toggle ready
       // Listen for checkbox changes in ordered lists
@@ -89,6 +95,16 @@
       return delta;
     });
     quill.format("size", "20px");
+  });
+
+  $effect(() => {
+    // handle empty content cause by new note
+    if (content.trim() === '') quill.root.innerHTML = '';
+  })
+
+  watch(() => noteID, () => {
+    // handle note change
+    quill.root.innerHTML = content;
   });
 </script>
 
