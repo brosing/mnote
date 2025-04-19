@@ -1,6 +1,6 @@
 <script lang="ts">
   import cn from "clsx";
-  import { PersistedState } from "runed";
+  import { PersistedState, useDebounce } from "runed";
   import Note from "$lib/components/note.svelte";
   import PomodoroTimer from "$lib/components/pomodoro-timer.svelte";
   import { noteHistory, type NoteHistoryItem } from "$lib/store/note-history-store";
@@ -12,8 +12,16 @@
     storage: "local",
   });
 
+  const updateHistoryNote = useDebounce(
+		() => {
+			noteHistory.update(noteID, noteText.current);
+		},
+		1000
+	);
+
   function handleContentNote(text: string) {
     noteText.current = text;
+    updateHistoryNote();
   }
 
   function handleNewNote() {

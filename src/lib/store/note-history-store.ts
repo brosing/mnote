@@ -7,6 +7,7 @@ export type NoteHistoryItem = {
 };
 
 function createNoteHistory() {
+  // TODO store to tauri storage
   const { subscribe, set, update } = writable<NoteHistoryItem[]>([]);
 
   return {
@@ -20,6 +21,12 @@ function createNoteHistory() {
         },
         ...items,
       ]),
+    update: (id: string, newContent: string) =>
+      update((items) =>
+        items.map((item) =>
+          item.id === id ? { ...item, content: newContent } : item
+        )
+      ),
     clear: () => set([]),
   };
 }
