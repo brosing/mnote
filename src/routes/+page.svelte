@@ -1,32 +1,43 @@
 <script lang="ts">
   import cn from "clsx";
+  import { onMount } from "svelte";
   import { PersistedState, useDebounce } from "runed";
   import Note from "$lib/components/note.svelte";
   import PomodoroTimer from "$lib/components/pomodoro-timer.svelte";
-  import { noteHistory, type NoteHistoryItem } from "$lib/store/note-history-store";
+  import {
+    noteHistory,
+    type NoteHistoryItem,
+  } from "$lib/store/note-history-store";
+  import { Trash2 } from "@lucide/svelte";
 
   let isFocus = $state(false);
-  let noteID = $state('defaultID');
+  let noteID = $state("defaultID");
+  let history = $state<NoteHistoryItem[]>([]);
 
   const noteText = new PersistedState("note", "", {
     storage: "local",
   });
 
-  const updateHistoryNote = useDebounce(
-		() => {
-			noteHistory.update(noteID, noteText.current);
-		},
-		1000
-	);
+  onMount(async () => {
+    const loadedVal = await noteHistory.load();
+
+    if (loadedVal) {
+      history = loadedVal;
+    }
+  });
+
+  const updateHistoryNote = useDebounce(async () => {
+    history = await noteHistory.update(noteID, noteText.current);
+  }, 1000);
 
   function handleContentNote(text: string) {
     noteText.current = text;
     updateHistoryNote();
   }
 
-  function handleNewNote() {
+  async function handleNewNote() {
     if (noteText.current.trim()) {
-      noteHistory.add(noteText.current);
+      history = await noteHistory.add(noteText.current);
       noteText.current = "";
     }
   }
@@ -34,6 +45,15 @@
   function handleChangeNote(note: NoteHistoryItem) {
     noteID = note.id;
     noteText.current = note.content;
+  }
+
+  async function handleDeleteNote(id: string) {
+    history = await noteHistory.delete(id);
+    // Optionally, reset noteID/noteText if the deleted note was selected
+    if (noteID === id) {
+      noteID = "";
+      noteText.current = "";
+    }
   }
 </script>
 
@@ -51,12 +71,23 @@
     `}
     >
       <h3 class="font-bold text-zinc-200 mb-2">History</h3>
-      {#each $noteHistory as item (item.id)}
+      {#each history as item (item.id)}
         <button
-          class="block w-full mb-2 py-2 px-3 rounded-lg transition-colors bg-zinc-700 hover:bg-zinc-600 text-zinc-100 hover:text-white text-xs text-left"
+          class="relative block w-full mb-2 py-2 pl-3 pr-6 rounded-lg transition-colors bg-zinc-700 hover:bg-zinc-600 text-zinc-100 hover:text-white text-xs text-left group"
           onclick={() => handleChangeNote(item)}
         >
-          <div class="truncate mb-1">
+          <!-- svelte-ignore a11y_click_events_have_key_events -->
+          <span
+            class="absolute top-1 right-1 opacity-10 hover:opacity-100 transition-opacity cursor-pointer text-red-500 p-1"
+            onclick={() => handleDeleteNote(item.id)}
+            title="Delete note"
+            role="button"
+            tabindex="0"
+          >
+            <Trash2 class="h-[14px] w-[14px]" />
+          </span>
+
+          <div class="truncate mb-2">
             {item.content.slice(0, 100).replace(/(<([^>]+)>)/gi, "")}
           </div>
           <div class="text-zinc-300 text-[10px]">
@@ -69,7 +100,11 @@
 
   <!-- Main content -->
   <div class="w-2xl h-screen">
-    <Note content={noteText.current} handleContent={handleContentNote} {noteID} />
+    <Note
+      content={noteText.current}
+      handleContent={handleContentNote}
+      {noteID}
+    />
 
     <!-- Bottom menu: height & bottom position should follow BOTTOM_BAR_HEIGHT -->
     <div
@@ -83,7 +118,7 @@
       <PomodoroTimer bind:isFocus />
 
       <button
-        class="transition-colors dark:hover:bg-zinc-800 py-1.5 px-4 rounded-full opacity-75 hover:opacity-100"
+        class="transition-colors text-nowrap dark:hover:bg-zinc-800 py-1.5 px-4 rounded-full opacity-75 hover:opacity-100"
         onclick={handleNewNote}
       >
         new note

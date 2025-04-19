@@ -107,7 +107,8 @@
   watch(() => noteID, () => {
     quill.root.innerHTML = content;
     // FIXME handle cursor thrown out of content on note change
-    quill.setSelection(content.length - 1, 0);
+    // quill.setSelection(content.length - 1, 0);
+    quill.blur();
   });
 </script>
 
