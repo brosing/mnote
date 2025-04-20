@@ -21,7 +21,6 @@
 
   onMount(async () => {
     const loadedVal = await noteHistory.load();
-
     if (loadedVal) {
       history = loadedVal;
     }
@@ -36,6 +35,11 @@
     updateHistoryNote();
   }
 
+  function resetNote() {
+    noteText.current = "";
+    noteID = DEFAULT_ID;
+  }
+
   async function handleNewNote() {
     if (!noteText.current.trim()) return;
 
@@ -44,8 +48,7 @@
     } else {
       history = await noteHistory.update(noteID, noteText.current);
     }
-    noteText.current = "";
-    noteID = DEFAULT_ID;
+    resetNote();
   }
 
   function handleChangeNote(note: NoteHistoryItemStore) {
@@ -55,11 +58,7 @@
 
   async function handleDeleteNote(id: string) {
     history = await noteHistory.delete(id);
-    // Optionally, reset noteID/noteText if the deleted note was selected
-    if (noteID === id) {
-      noteID = "";
-      noteText.current = "";
-    }
+    if (noteID === id) resetNote();
   }
 </script>
 
