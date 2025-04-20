@@ -1,6 +1,6 @@
 import { load as loadStore, Store } from '@tauri-apps/plugin-store';
 
-export type NoteHistoryItem = {
+export type NoteHistoryItemStore = {
   id: string;
   content: string;
   createdAt: number;
@@ -15,7 +15,7 @@ function createNoteHistory() {
     if (!store) {
       store = await loadStore('store.json');
     }
-    let value = await store.get<NoteHistoryItem[]>(STORE_KEY);
+    let value = await store.get<NoteHistoryItemStore[]>(STORE_KEY);
     if (!value) {
       value = [];
       await store.set(STORE_KEY, value);
@@ -28,7 +28,7 @@ function createNoteHistory() {
     if (!store) {
       store = await loadStore('store.json');
     }
-    return (await store.get<NoteHistoryItem[]>(STORE_KEY)) ?? [];
+    return (await store.get<NoteHistoryItemStore[]>(STORE_KEY)) ?? [];
   }
 
   async function add(content: string) {

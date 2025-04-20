@@ -6,13 +6,14 @@
   import PomodoroTimer from "$lib/components/pomodoro-timer.svelte";
   import {
     noteHistory,
-    type NoteHistoryItem,
+    type NoteHistoryItemStore,
   } from "$lib/store/note-history-store";
-  import { Trash2 } from "@lucide/svelte";
+  import NoteHistoryItem from "$lib/components/note-history-item.svelte";
 
+  const DEFAULT_ID = "NEW_NOTE";
   let isFocus = $state(false);
-  let noteID = $state("defaultID");
-  let history = $state<NoteHistoryItem[]>([]);
+  let noteID = $state(DEFAULT_ID);
+  let history = $state<NoteHistoryItemStore[]>([]);
 
   const noteText = new PersistedState("note", "", {
     storage: "local",
@@ -36,13 +37,18 @@
   }
 
   async function handleNewNote() {
-    if (noteText.current.trim()) {
+    if (!noteText.current.trim()) return;
+
+    if (noteID === DEFAULT_ID) {
       history = await noteHistory.add(noteText.current);
-      noteText.current = "";
+    } else {
+      history = await noteHistory.update(noteID, noteText.current);
     }
+    noteText.current = "";
+    noteID = DEFAULT_ID;
   }
 
-  function handleChangeNote(note: NoteHistoryItem) {
+  function handleChangeNote(note: NoteHistoryItemStore) {
     noteID = note.id;
     noteText.current = note.content;
   }
@@ -71,30 +77,13 @@
         "bg-zinc-800 p-4 rounded-lg transition duration-200 ease-out z-10"
       )}
     >
-      <h3 class="font-bold text-zinc-200 mb-2">History</h3>
+      <h3 class="font-bold text-zinc-200 mb-3">History</h3>
       {#each history as item (item.id)}
-        <button
-          class="relative block w-full mb-2 py-2 pl-3 pr-6 rounded-lg transition-colors bg-zinc-700 hover:bg-zinc-600 text-zinc-100 hover:text-white text-xs text-left group"
-          onclick={() => handleChangeNote(item)}
-        >
-          <!-- svelte-ignore a11y_click_events_have_key_events -->
-          <span
-            class="absolute top-1 right-1 opacity-10 hover:opacity-100 transition-opacity cursor-pointer text-red-500 p-1"
-            onclick={() => handleDeleteNote(item.id)}
-            title="Delete note"
-            role="button"
-            tabindex="0"
-          >
-            <Trash2 class="h-[14px] w-[14px]" />
-          </span>
-
-          <div class="truncate mb-2">
-            {item.content.slice(0, 100).replace(/(<([^>]+)>)/gi, "")}
-          </div>
-          <div class="text-zinc-300 text-[10px]">
-            {new Date(item.createdAt).toLocaleString()}
-          </div>
-        </button>
+        <NoteHistoryItem
+          {item}
+          onSelect={handleChangeNote}
+          onDelete={handleDeleteNote}
+        />
       {/each}
     </div>
   </div>
