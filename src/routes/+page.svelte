@@ -51,7 +51,11 @@
     resetNote();
   }
 
-  function handleChangeNote(note: NoteHistoryItemStore) {
+  async function handleChangeNote(note: NoteHistoryItemStore) {
+    if (noteID === DEFAULT_ID && noteText.current.trim()) {
+      history = await noteHistory.add(noteText.current);
+    }
+
     noteID = note.id;
     noteText.current = note.content;
   }

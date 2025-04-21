@@ -9,6 +9,7 @@
     onDelete: (id: string) => void;
   }
   let { item, onSelect, onDelete }: Props = $props();
+  $inspect(item)
 </script>
 
 <button

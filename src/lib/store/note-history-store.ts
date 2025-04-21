@@ -1,4 +1,4 @@
-import { load as loadStore, Store } from '@tauri-apps/plugin-store';
+import Database from '@tauri-apps/plugin-sql';
 
 export type NoteHistoryItemStore = {
   id: string;
@@ -6,80 +6,71 @@ export type NoteHistoryItemStore = {
   createdAt: number;
 };
 
-const STORE_KEY = "NOTE_HISTORY"; 
+const DB_PATH = 'sqlite:note-history.db';
 
 function createNoteHistory() {
-  let store: Store | null = null;
+  let db: Database | null = null;
+
+  async function getDb() {
+    if (!db) {
+      db = await Database.load(DB_PATH);
+      // Create table if not exists
+      await db.execute(`
+        CREATE TABLE IF NOT EXISTS note_history (
+          id TEXT PRIMARY KEY,
+          content TEXT NOT NULL,
+          createdAt INTEGER NOT NULL,
+          updatedAt INTEGER NOT NULL
+        )
+      `);
+    }
+    return db;
+  }
 
   async function load() {
-    if (!store) {
-      store = await loadStore('store.json');
-    }
-    let value = await store.get<NoteHistoryItemStore[]>(STORE_KEY);
-    if (!value) {
-      value = [];
-      await store.set(STORE_KEY, value);
-      await store.save();
-    }
-    return value;
+    const db = await getDb();
+    const rows = await db.select<NoteHistoryItemStore[]>(
+      'SELECT * FROM note_history ORDER BY createdAt DESC'
+    );
+    return rows;
   }
 
   async function get() {
-    if (!store) {
-      store = await loadStore('store.json');
-    }
-    return (await store.get<NoteHistoryItemStore[]>(STORE_KEY)) ?? [];
+    return load();
   }
 
   async function add(content: string) {
-    const items = await get();
-    const newItems = [
-      {
-        id: crypto.randomUUID(),
-        content,
-        createdAt: Date.now(),
-      },
-      ...items,
-    ];
-    if (!store) {
-      throw new Error("store is not initialized");
-    }
-    await store.set(STORE_KEY, newItems);
-    await store.save();
-    return newItems;
+    const db = await getDb();
+    const id = crypto.randomUUID();
+    const createdAt = Date.now();
+    const updatedAt = createdAt;
+    await db.execute(
+      'INSERT INTO note_history (id, content, createdAt, updatedAt) VALUES (?, ?, ?, ?)',
+      [id, content, createdAt, updatedAt]
+    );
+    return load();
   }
 
   async function update(id: string, newContent: string) {
-    const items = await get();
-    const newItems = items.map((item) =>
-      item.id === id ? { ...item, content: newContent } : item
+    const db = await getDb();
+    const updatedAt = Date.now();
+    await db.execute(
+      'UPDATE note_history SET content = ?, updatedAt = ? WHERE id = ?',
+      [newContent, updatedAt, id]
     );
-    if (!store) {
-      throw new Error("store is not initialized");
-    }
-    await store.set(STORE_KEY, newItems);
-    await store.save();
-    return newItems;
+    return load();
   }
 
   async function clear() {
-    if (!store) {
-      throw new Error("store is not initialized");
-    }
-    await store.set(STORE_KEY, []);
-    await store.save();
+    const db = await getDb();
+    await db.execute('DELETE FROM note_history');
     return [];
   }
 
   async function deleteById(id: string) {
-    const items = await get();
-    const newItems = items.filter(item => item.id !== id);
-    if (!store) {
-      throw new Error("store is not initialized");
-    }
-    await store.set(STORE_KEY, newItems);
-    await store.save();
-    return newItems;
+    const db = await getDb();
+    await db.execute('DELETE FROM note_history WHERE id = ?', [id]);
+    return load();
   }
 
   return {
