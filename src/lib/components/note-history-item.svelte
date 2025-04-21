@@ -1,5 +1,6 @@
 <script lang="ts">
   import { Trash2 } from "@lucide/svelte";
+  import { decode } from "html-entities";
   import type { NoteHistoryItemStore } from "$lib/store/note-history-store";
   import Dialog from "./dialog.svelte";
 
@@ -9,6 +10,16 @@
     onDelete: (id: string) => void;
   }
   let { item, onSelect, onDelete }: Props = $props();
+  const encodedContent = decode(item.content)
+    .slice(0, 100)
+    .replace(/(<([^>]+)>)/gi, " ")
+    .trim();
+  const parsedTime = new Date(item.createdAt)
+    .toLocaleString()
+    .split(":")
+    .slice(0, 2)
+    .join(":")
+    .replace(", ", " - ");
 </script>
 
 <button
@@ -47,17 +58,9 @@
   </span>
 
   <div class="truncate mb-2 font-medium">
-    {item.content
-      .slice(0, 100)
-      .replace(/(<([^>]+)>)/gi, " ")
-      .trim() || "(Empty)"}
+    {encodedContent || "(Empty)"}
   </div>
   <div class="text-zinc-500 dark:text-zinc-400 text-[10px] font-mono">
-    {new Date(item.createdAt)
-      .toLocaleString()
-      .split(":")
-      .slice(0, 2)
-      .join(":")
-      .replace(", ", " - ")}
+    {parsedTime}
   </div>
 </button>

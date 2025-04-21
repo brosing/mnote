@@ -4,6 +4,7 @@ export type NoteHistoryItemStore = {
   id: string;
   content: string;
   createdAt: number;
+  updatedAt: number;
 };
 
 const DB_PATH = 'sqlite:note-history.db';

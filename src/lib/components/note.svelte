@@ -3,7 +3,7 @@
   import Quill from "quill";
   // @ts-ignore
   import QuillMarkdown from "quilljs-markdown";
-  import "quill/dist/quill.bubble.css";
+  import "quill/dist/quill.snow.css";
   import { watch } from "runed";
 
   let quill: Quill;
@@ -19,7 +19,7 @@
 
   onMount(() => {
     quill = new Quill(editorElement, {
-      theme: "bubble",
+      theme: "snow",
       modules: {
         toolbar: [
           [{ header: [1, 2, 3, false] }],
@@ -27,6 +27,7 @@
           ["blockquote", "code-block"],
           [{ list: "ordered" }, { list: "bullet" }],
           ["link", "image"],
+          [{ 'color': [] }, { 'background': [] }],
           ["clean"],
         ],
       },
@@ -36,6 +37,9 @@
     if (content) {
       quill.root.innerHTML = content;
     }
+
+    const toolbar = quill.getModule('toolbar');
+    console.log('toolbar: ', toolbar);
 
     // Handle content changes
     quill.on("text-change", (delta) => {
@@ -77,6 +81,13 @@
       // }
     });
 
+    quill.on("selection-change", (range) => {
+      (toolbar as any).container.classList.toggle(
+        "hidden",
+        range.length === 0
+      );
+    });
+
     quill.clipboard.addMatcher(Node.ELEMENT_NODE, function (_, delta) {
       delta.ops = delta.ops.map((_) => ({
         insert: _.insert,
@@ -116,8 +127,8 @@
     padding-left: 0;
     margin-top: 0.4rem;
   }
-  :global(.ql-bubble .ql-picker.ql-expanded .ql-picker-options) {
-    margin-top: 1rem;
+  :global(.ql-editor .ql-snow .ql-picker.ql-expanded .ql-picker-options) {
+    margin-top: 2rem;
     z-index: 1;
     border-radius: 10px;
     padding: 0.5rem 1rem;
@@ -135,8 +146,8 @@
   }
   :global(.ql-editor li > .ql-ui:before) {
     position: absolute;
-    z-index: -10;
-    color: black;
+    z-index: 0;
+    @apply text-zinc-600;
   }
   :global(.ql-editor li[data-list="ordered"] > .ql-ui:before) {
     margin-left: 0;
@@ -155,8 +166,31 @@
     margin-top: -0.6rem;
     margin-left: -0.6rem;
   }
-
-  :global(.dark .ql-editor li > .ql-ui:before) {
-    @apply text-zinc-600;
+  :global(.ql-container.ql-snow) {
+    border: none;
+  }
+  :global(.ql-toolbar.ql-snow) {
+    border: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    padding-top: 2rem;
+    z-index: 10;
+    @apply bg-zinc-50;
+    /* @apply rounded-lg shadow; */
+  }
+  :global(.dark .ql-toolbar.ql-snow) {
+    @apply bg-zinc-900;
+  }
+  :global(.ql-toolbar.ql-snow .ql-formats) {
+    display: flex;
+    flex-wrap: nowrap;
+  }
+  :global(.ql-toolbar.ql-snow.hidden) {
+    display: none;
   }
 </style>

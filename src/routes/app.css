@@ -12,7 +12,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
-  @apply text-zinc-600;
+  @apply text-zinc-700;
   @apply bg-zinc-50;
 }
 
@@ -40,7 +40,7 @@ h1, h2, h3, h4, h5, h6 {
   height: 28px; /* Standard height for macOS title bar */
   -webkit-app-region: drag; /* Makes the region draggable */
   background: transparent; /* Transparent background */
-  z-index: 10;
+  z-index: 30;
 }
 
 .no-scrollbar::-webkit-scrollbar {

@@ -64,7 +64,7 @@
   let seconds = $derived(focusTime % 60);
 </script>
 
-<div class="flex gap-4 items-center w-60">
+<div class="flex gap-3 items-center w-60">
   <button
     class={`z-20 flex-center select-none cursor-pointer transition-transform active:scale-110 font-mono ${isFocus ? "opacity-100" : "opacity-80"}`}
     onclick={toggleTimer}
