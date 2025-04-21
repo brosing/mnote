@@ -9,11 +9,10 @@
     onDelete: (id: string) => void;
   }
   let { item, onSelect, onDelete }: Props = $props();
-  $inspect(item)
 </script>
 
 <button
-  class="relative block w-full mb-2 py-2 pl-3 pr-6 rounded-lg transition-colors bg-zinc-700 hover:bg-zinc-600 text-zinc-100 hover:text-white text-xs text-left group"
+  class="relative block w-full mb-2 py-2 pl-3 pr-6 rounded-lg transition-colors bg-zinc-200 hover:bg-zinc-300 dark:bg-zinc-700 dark:hover:bg-zinc-600 text-xs text-left group"
   onclick={() => onSelect(item)}
 >
   <!-- svelte-ignore a11y_click_events_have_key_events -->
@@ -22,6 +21,7 @@
     title="Delete note"
     role="button"
     tabindex="0"
+    onclick={(e) => e.stopPropagation()}
   >
     <Dialog title="Confirmation">
       {#snippet trigger()}
@@ -30,7 +30,8 @@
 
       {#snippet content()}
         <div class="text-sm text-center">
-          Are you sure you want to delete this note? This action cannot be undone.
+          Are you sure you want to delete this note? This action cannot be
+          undone.
 
           <div class="mt-6 text-center">
             <button
@@ -45,10 +46,13 @@
     </Dialog>
   </span>
 
-  <div class="truncate mb-2">
-    {item.content.slice(0, 100).replace(/(<([^>]+)>)/gi, " ")}
+  <div class="truncate mb-2 font-medium">
+    {item.content
+      .slice(0, 100)
+      .replace(/(<([^>]+)>)/gi, " ")
+      .trim() || "(Empty)"}
   </div>
-  <div class="text-zinc-300 text-[10px]">
+  <div class="text-zinc-500 dark:text-zinc-400 text-[10px] font-mono">
     {new Date(item.createdAt)
       .toLocaleString()
       .split(":")

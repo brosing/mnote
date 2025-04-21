@@ -1,4 +1,4 @@
-use tauri_plugin_sql::{Migration, MigrationKind};
+mod migrations; // <-- Add this line
 
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 #[tauri::command]
@@ -8,25 +8,7 @@ fn greet(name: &str) -> String {
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
-    let migrations = vec![
-        Migration {
-            version: 1,
-            description: "create_initial_tables",
-            sql: "CREATE TABLE IF NOT EXISTS note_history (
-                id TEXT PRIMARY KEY,
-                content TEXT NOT NULL,
-                createdAt INTEGER NOT NULL,
-                updatedAt INTEGER NOT NULL
-            );",
-            kind: MigrationKind::Up,
-        },
-        Migration {
-            version: 2,
-            description: "add_updatedAt_column",
-            sql: "ALTER TABLE note_history ADD COLUMN updatedAt INTEGER;",
-            kind: MigrationKind::Up,
-        }
-    ];
+    let migrations = migrations::get_migrations(); // <-- Use the imported function
 
     tauri::Builder::default()
         // .plugin(tauri_plugin_sql::Builder::new().build())

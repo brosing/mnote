@@ -66,7 +66,7 @@
 
 <div class="flex gap-4 items-center w-60">
   <button
-    class={`z-20 flex-center select-none cursor-pointer transition-transform active:scale-110 font-mono ${isFocus ? "opacity-100" : "opacity-50"}`}
+    class={`z-20 flex-center select-none cursor-pointer transition-transform active:scale-110 font-mono ${isFocus ? "opacity-100" : "opacity-80"}`}
     onclick={toggleTimer}
     ondblclick={resetTimer}
     tabindex="0"
@@ -92,9 +92,9 @@
   >
     {#snippet children()}
       <span
-        class="dark:bg-zinc-500 relative h-1 w-full grow cursor-pointer overflow-hidden rounded-full"
+        class="bg-zinc-500 dark:bg-zinc-500 relative h-1 w-full grow cursor-pointer overflow-hidden rounded-full"
       >
-        <Slider.Range class="dark:bg-zinc-100 absolute h-full" />
+        <Slider.Range class="bg-zinc-900 dark:bg-zinc-100 absolute h-full" />
       </span>
       <Slider.Thumb
         index={0}

@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
   font-size: 16px;
@@ -14,11 +16,9 @@
   @apply bg-zinc-50;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    color: white;
-    @apply bg-zinc-900;
-  }
+.dark {
+  color: white;
+  @apply bg-zinc-900;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -41,6 +41,16 @@ h1, h2, h3, h4, h5, h6 {
   -webkit-app-region: drag; /* Makes the region draggable */
   background: transparent; /* Transparent background */
   z-index: 10;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 }
 
 button {

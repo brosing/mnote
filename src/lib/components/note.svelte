@@ -39,17 +39,6 @@
 
     // Handle content changes
     quill.on("text-change", (delta) => {
-      const selection = quill.getSelection();
-      if (!selection || selection.length > 0) return;
-
-      const [line] = quill.getLine(selection.index);
-      const lineText = line?.domNode?.innerText || "";
-      const isLineEmpty = lineText.trim() === "";
-
-      if (isLineEmpty) {
-        // Remove heading format by setting it to null (paragraph)
-        quill.formatLine(selection.index, 1, "header", false);
-      }
       handleContent(quill.root.innerHTML);
 
       // Uncomment if the feature toggle ready
@@ -94,7 +83,6 @@
       }));
       return delta;
     });
-    quill.format("size", "20px");
   });
 
   $effect(() => {
@@ -106,8 +94,6 @@
 
   watch(() => noteID, () => {
     quill.root.innerHTML = content;
-    // FIXME handle cursor thrown out of content on note change
-    // quill.setSelection(content.length - 1, 0);
     quill.blur();
   });
 </script>
@@ -170,9 +156,7 @@
     margin-left: -0.6rem;
   }
 
-  @media (prefers-color-scheme: dark) {
-    :global(.ql-editor li > .ql-ui:before) {
-      color: white;
-    }
+  :global(.dark .ql-editor li > .ql-ui:before) {
+    @apply text-zinc-600;
   }
 </style>
