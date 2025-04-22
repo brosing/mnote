@@ -25,8 +25,10 @@
           [{ header: [1, 2, 3, false] }],
           ["bold", "italic", "underline", "strike"],
           ["blockquote", "code-block"],
-          [{ list: "ordered" }, { list: "bullet" }],
+          [{ 'align': [] }],
+          [{ list: "ordered" }, { list: "bullet" }, { 'list': 'check' }],
           ["link", "image"],
+          [{ 'indent': '-1'}, { 'indent': '+1' }],
           [{ 'color': [] }, { 'background': [] }],
           ["clean"],
         ],
@@ -37,9 +39,6 @@
     if (content) {
       quill.root.innerHTML = content;
     }
-
-    const toolbar = quill.getModule('toolbar');
-    console.log('toolbar: ', toolbar);
 
     // Handle content changes
     quill.on("text-change", (delta) => {
@@ -81,6 +80,7 @@
       // }
     });
 
+    const toolbar = quill.getModule("toolbar");
     quill.on("selection-change", (range) => {
       (toolbar as any).container.classList.toggle(
         "hidden",
@@ -123,49 +123,60 @@
     scrollbar-width: none; /* Firefox */
     padding: 140px 0;
   }
-  :global(.ql-editor ol) {
-    padding-left: 0;
-    margin-top: 0.4rem;
+  :global(.ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-label) {
+    border: 0;
   }
-  :global(.ql-editor .ql-snow .ql-picker.ql-expanded .ql-picker-options) {
-    margin-top: 2rem;
+  :global(.ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-options) {
+    margin-top: 0.5rem;
     z-index: 1;
+    border: 0;
     border-radius: 10px;
     padding: 0.5rem 1rem;
   }
-  :global(.ql-editor li) {
-    display: flex;
-    flex-direction: row;
-    padding-left: 0;
+  :global(.dark .ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-options) {
+    @apply bg-zinc-800;
   }
-  :global(.ql-editor li > .ql-ui) {
-    position: relative;
-    height: 1.6rem;
-    width: 1.6rem;
-    flex-shrink: 0;
+  :global(
+    .dark .ql-toolbar.ql-snow .ql-picker,
+    .dark .ql-toolbar.ql-snow .ql-stroke
+  ) {
+    @apply text-zinc-400;
+    @apply stroke-zinc-400;
   }
-  :global(.ql-editor li > .ql-ui:before) {
-    position: absolute;
-    z-index: 0;
-    @apply text-zinc-600;
+  :global(
+    .dark .ql-toolbar.ql-snow .ql-fill,
+    .dark .ql-toolbar.ql-snow .ql-stroke.ql-fill
+  ) {
+    @apply fill-zinc-400;
   }
-  :global(.ql-editor li[data-list="ordered"] > .ql-ui:before) {
-    margin-left: 0;
-    text-align: center;
+  :global(.ql-editor ol) {
+    padding-left: 0.5rem;
   }
-  :global(.ql-editor li[data-list="bullet"] > .ql-ui:before) {
-    margin-left: 0;
-    text-align: center;
-    font-size: 1.6rem;
-    margin-top: -0.4rem;
-    margin-left: -0.3rem;
+  :global(.ql-editor ol > [data-list="bullet"] > .ql-ui::before) {
+    margin-left: -1.8rem;
+    cursor: none;
   }
-  :global(.ql-editor li[data-list="checked"] > .ql-ui:before),
-  :global(.ql-editor li[data-list="unchecked"] > .ql-ui:before) {
-    font-size: 1.6rem;
-    margin-top: -0.6rem;
-    margin-left: -0.6rem;
+  :global(.ql-editor ol > [data-list="checked"] > .ql-ui),
+  :global(.ql-editor ol > [data-list="unchecked"] > .ql-ui) {
+    color: unset;
+    cursor: none;
   }
+  /* Generate indentation levels from 1-16, with 1.5rem increment for each level */
+  :global(.ql-editor li[class*="ql-indent-"]:not(.ql-direction-rtl)) {
+    padding-left: calc(1.5rem * var(--indent-level));
+  }
+
+  :global(.ql-editor li.ql-indent-1:not(.ql-direction-rtl)) { --indent-level: 2; }
+  :global(.ql-editor li.ql-indent-2:not(.ql-direction-rtl)) { --indent-level: 3; }
+  :global(.ql-editor li.ql-indent-3:not(.ql-direction-rtl)) { --indent-level: 4; }
+  :global(.ql-editor li.ql-indent-4:not(.ql-direction-rtl)) { --indent-level: 5; }
+  :global(.ql-editor li.ql-indent-5:not(.ql-direction-rtl)) { --indent-level: 6; }
+  :global(.ql-editor li.ql-indent-6:not(.ql-direction-rtl)) { --indent-level: 7; }
+  :global(.ql-editor li.ql-indent-7:not(.ql-direction-rtl)) { --indent-level: 8; }
+  :global(.ql-editor li.ql-indent-8:not(.ql-direction-rtl)) { --indent-level: 9; }
+  :global(.ql-editor li.ql-indent-9:not(.ql-direction-rtl)) { --indent-level: 10; }
+  :global(.ql-editor li.ql-indent-10:not(.ql-direction-rtl)) { --indent-level: 11; }
+
   :global(.ql-container.ql-snow) {
     border: none;
   }
@@ -181,7 +192,7 @@
     padding-top: 2rem;
     z-index: 10;
     @apply bg-zinc-50;
-    /* @apply rounded-lg shadow; */
+    /* @apply hidden; */
   }
   :global(.dark .ql-toolbar.ql-snow) {
     @apply bg-zinc-900;
