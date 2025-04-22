@@ -96,8 +96,8 @@
   >
     <div
       class={cn(
-        "h-[calc(100%-52px)] w-80 absolute top-9 -left-80 overflow-y-auto no-scrollbar",
-        isFocus ? "" : "group-hover:translate-x-[336px]",
+        "h-[calc(100%-52px)] w-[340px] absolute top-9 -left-[340px] overflow-y-auto no-scrollbar",
+        isFocus ? "" : "group-hover:translate-x-[356px]",
         "bg-zinc-100 dark:bg-zinc-800 shadow-2xl p-4 rounded-lg transition duration-200 ease-out"
       )}
     >
@@ -106,7 +106,7 @@
   </div>
 
   <!-- Main content -->
-  <div class="w-2xl h-screen">
+  <div class="w-[600px] h-screen">
     <Note
       content={noteText.current}
       handleContent={handleContentNote}
@@ -143,8 +143,8 @@
   >
     <div
       class={cn(
-        "h-[calc(100%-52px)] w-80 absolute top-9 -right-80",
-        isFocus ? "" : "group-hover:-translate-x-[336px]",
+        "h-[calc(100%-52px)] w-[340px] absolute top-9 -right-[340px]",
+        isFocus ? "" : "group-hover:-translate-x-[356px]",
         "bg-zinc-100 dark:bg-zinc-800 shadow-2xl p-4 rounded-lg transition duration-200 ease-out"
       )}
     >

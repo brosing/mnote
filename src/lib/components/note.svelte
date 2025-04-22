@@ -28,7 +28,7 @@
           [{ 'align': [] }],
           [{ list: "ordered" }, { list: "bullet" }, { 'list': 'check' }],
           ["link", "image"],
-          [{ 'indent': '-1'}, { 'indent': '+1' }],
+          // [{ 'indent': '-1'}, { 'indent': '+1' }],
           [{ 'color': [] }, { 'background': [] }],
           ["clean"],
         ],
@@ -179,6 +179,7 @@
 
   :global(.ql-container.ql-snow) {
     border: none;
+    font-family: inherit;
   }
   :global(.ql-toolbar.ql-snow) {
     border: none;
@@ -190,7 +191,7 @@
     flex-wrap: nowrap;
     justify-content: center;
     padding-top: 2rem;
-    z-index: 10;
+    z-index: 1;
     @apply bg-zinc-50;
     /* @apply hidden; */
   }
