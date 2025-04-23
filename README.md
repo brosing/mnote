@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![mnote](static/tauri.svg)
+![mnote](ss.png)
 
 A minimalist note-taking app built with Tauri and Svelte, inspired by Freewrite's distraction-free writing experience.
 
