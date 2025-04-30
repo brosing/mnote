@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Trash2 } from "@lucide/svelte";
+  import { Trash } from "phosphor-svelte";
   import { decode } from "html-entities";
   import cn from "clsx";
   import type { NoteHistoryItemStore } from "$lib/store/note-history-store";
@@ -26,14 +26,14 @@
 
 <button
   class={cn(
-    'relative block w-full mb-2 py-2 pl-3 pr-6 rounded-lg transition-colors hover:bg-zinc-300 dark:hover:bg-zinc-600 text-xs text-left group',
-     isSelected ? 'bg-zinc-300 dark:bg-zinc-600 border border-zinc-600 dark:border-zinc-300' : 'bg-zinc-200 dark:bg-zinc-700'
+    'relative block w-full mb-2 py-2 px-3 rounded-lg transition-colors hover:bg-zinc-300 dark:hover:bg-zinc-600 choco:hover:bg-amber-700/30 text-xs text-left group',
+     isSelected ? 'bg-zinc-300 dark:bg-zinc-600 border choco:bg-amber-700/50 border-zinc-600 dark:border-zinc-300 choco:border-amber-700/10' : 'bg-zinc-200 dark:bg-zinc-700 choco:bg-amber-600/10'
   )}
   onclick={() => onSelect(item)}
 >
   <!-- svelte-ignore a11y_click_events_have_key_events -->
   <span
-    class="absolute top-1 right-1 opacity-10 hover:opacity-100 transition-opacity cursor-pointer text-red-500 p-1"
+    class="absolute bottom-0.5 right-1 opacity-10 hover:opacity-100 transition-opacity cursor-pointer text-red-500 p-1"
     title="Delete note"
     role="button"
     tabindex="0"
@@ -41,7 +41,7 @@
   >
     <Dialog title="Confirmation">
       {#snippet trigger()}
-        <Trash2 class="h-[14px] w-[14px]" />
+        <Trash class="h-[14px] w-[14px]" />
       {/snippet}
 
       {#snippet content()}

@@ -136,6 +136,9 @@
   :global(.dark .ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-options) {
     @apply bg-zinc-800;
   }
+  :global(.choco .ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-options) {
+    @apply bg-amber-100;
+  }
   :global(
     .dark .ql-toolbar.ql-snow .ql-picker,
     .dark .ql-toolbar.ql-snow .ql-stroke
@@ -192,11 +195,14 @@
     justify-content: center;
     padding-top: 2rem;
     z-index: 1;
-    @apply bg-zinc-50;
+    @apply bg-white;
     /* @apply hidden; */
   }
   :global(.dark .ql-toolbar.ql-snow) {
     @apply bg-zinc-900;
+  }
+  :global(.choco .ql-toolbar.ql-snow) {
+    @apply bg-amber-100;
   }
   :global(.ql-toolbar.ql-snow .ql-formats) {
     display: flex;

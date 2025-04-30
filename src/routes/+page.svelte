@@ -97,8 +97,9 @@
     <div
       class={cn(
         "h-[calc(100%-52px)] w-[340px] absolute top-9 -left-[340px] overflow-y-auto no-scrollbar",
+        "bg-zinc-100 dark:bg-zinc-800 choco:bg-amber-100 p-4 rounded-lg transition duration-200 ease-out",
         isFocus ? "" : "group-hover:translate-x-[356px]",
-        "bg-zinc-100 dark:bg-zinc-800 shadow-2xl p-4 rounded-lg transition duration-200 ease-out"
+        isSidebarOpen ? "shadow-2xl" : "",
       )}
     >
       <NoteHistory {history} noteID={noteID.current} {handleChangeNote} {handleDeleteNote} />
@@ -114,9 +115,10 @@
     />
 
     <!-- Bottom menu: height & bottom position should follow BOTTOM_BAR_HEIGHT -->
+    <!-- adding before to handle chocolate variant that need to have opacity on the background -->
     <div
       class={cn(
-        "fixed bottom-4 left-1/2 -translate-x-1/2 py-2 pl-6 pr-2 shadow-xl overflow-y-auto no-scrollbar bg-white dark:bg-zinc-800",
+        "fixed bottom-4 left-1/2 -translate-x-1/2 py-2 pl-6 pr-2 shadow-xl overflow-y-auto no-scrollbar bg-white dark:bg-zinc-800 choco:bg-white before:absolute before:-inset-1 choco:before:bg-amber-600/40 before:rounded-full before:-z-10",
         "flex gap-10 justify-between items-center rounded-full transform duration-300 ease-in-out hover:opacity-100",
         isFocus || isSidebarOpen ? "opacity-0" : "opacity-100"
       )}
@@ -124,7 +126,7 @@
       <PomodoroTimer bind:isFocus />
 
       <button
-        class="transition-colors text-nowrap hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-700 py-1.5 px-4 rounded-full"
+        class="transition-colors text-nowrap hover:bg-zinc-100 dark:hover:bg-zinc-700 choco:hover:bg-amber-700/10 py-1.5 px-4 rounded-full"
         onclick={handleNewNote}
       >
         new note
@@ -144,8 +146,9 @@
     <div
       class={cn(
         "h-[calc(100%-52px)] w-[340px] absolute top-9 -right-[340px]",
+        "bg-zinc-100 dark:bg-zinc-800 choco:bg-amber-100 p-4 rounded-lg transition duration-200 ease-out",
         isFocus ? "" : "group-hover:-translate-x-[356px]",
-        "bg-zinc-100 dark:bg-zinc-800 shadow-2xl p-4 rounded-lg transition duration-200 ease-out"
+        isSidebarOpen ? "shadow-2xl" : "",
       )}
     >
       <Options />
