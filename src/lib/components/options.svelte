@@ -76,7 +76,7 @@
 
 <h3 class="font-bold mb-4 flex items-center justify-between">Options</h3>
 
-<Accordion.Root class="w-full" type="multiple">
+<Accordion.Root class="w-full" type="single">
   <Accordion.Item value="dark-mode" class="group border-b border-zinc-200 dark:border-zinc-700 choco:border-amber-700/10 text-sm">
     <Accordion.Header>
       <Accordion.Trigger

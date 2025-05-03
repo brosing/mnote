@@ -29,23 +29,26 @@ A minimalist note-taking app built with Tauri and Svelte, inspired by Freewrite'
 - ✅ Rich text editor with Markdown support
 - ✅ Note history management
 - ✅ Theme switching Light - Dark - Chocolate
-- ✅ Custom Font selection
+- ✅ Custom Font Family, Size & Line Height
 - ✅ Focus mode with Pomodoro like timer
 
 #### Left Bar - Folder & History
-- ✅ History sorting by creation date & updated date
+- ✅ Histor: sorting by creation date & updated date
 
 ### Under Development
 
 #### Left Bar - Folder & History
-- 🔄 Search functionality
 - 🔄 Two-level nested folder structure
+- 🔄 Basic Notes Support (Other than journaling)
 
 #### Right Bar - Options
-- 🔄 Additional font customization
-- 🔄 Custom line height settings
-- 🔄 Lofi player?
+- 🔄 Lofi player
 - 🔄 Export options
+
+#### Other - Options
+- 🔄 Search with shortcuts (Cmd Shift F / Cmd O)
+- 🔄 Calendar mode
+- 🔄 Mobile app ??
 
 ## 🛠️ Tech Stack
 
