@@ -24,7 +24,7 @@
 <h3 class="font-bold mb-4 flex items-center justify-between">
   History
   <button
-    class="ml-2 px-2 py-1 rounded-lg font-medium text-xs hover:bg-zinc-300 dark:hover:bg-zinc-600 choco:bg-amber-100 transition"
+    class="ml-2 px-2 py-1 rounded-lg font-medium text-xs hover:bg-zinc-300 dark:hover:bg-zinc-600 choco:hover:bg-amber-700/20 transition"
     onclick={toggleSortOrder}
   >
     {sortOrder === "created-newest" ? "Created ↓" : null}

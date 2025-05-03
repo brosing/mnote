@@ -5,13 +5,16 @@
 
   type Props = {
     isFocus: boolean;
+    onDone: () => void;
   };
 
-  let { isFocus = $bindable() }: Props = $props();
+  let { isFocus = $bindable(), onDone }: Props = $props();
 
   const DEFAULT_FOCUS_TIME = 25 * 60;
   const MAX_FOCUS_TIME = 40 * 60;
+  const MIN_FOCUS_TIME = 1 * 60;
   let focusTime = $state(DEFAULT_FOCUS_TIME);
+  let lastFocusTime = $state(DEFAULT_FOCUS_TIME);
 
   let interval: ReturnType<typeof setInterval> | null = null;
 
@@ -24,6 +27,8 @@
       isFocus = false;
       clearInterval(interval!);
       interval = null;
+      onDone();
+      focusTime = lastFocusTime;
       return;
     }
     focusTime -= 1;
@@ -81,8 +86,10 @@
     onValueChange={(val) => {
       if (isFocus) return;
       focusTime = val;
+      lastFocusTime = val;
     }}
     max={MAX_FOCUS_TIME}
+    min={MIN_FOCUS_TIME}
     step={60}
     disabled={isFocus}
     class={cn(
