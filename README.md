@@ -31,6 +31,7 @@ A minimalist note-taking app built with Tauri and Svelte, inspired by Freewrite'
 - ✅ Theme switching: Light - Dark - Chocolate
 - ✅ Custom font family, font size & line height
 - ✅ Focus mode: Pomodoro like timer with adjustable time
+- ✅ Search with shortcuts (Cmd / Ctrl + F)
 
 #### Left Bar - Folder & History
 - ✅ Histor: sorting by creation date & updated date
@@ -46,7 +47,6 @@ A minimalist note-taking app built with Tauri and Svelte, inspired by Freewrite'
 - 🔄 Export options
 
 #### Other - Options
-- 🔄 Search with shortcuts (Cmd Shift F / Cmd O)
 - 🔄 Calendar mode
 - 🔄 Mobile app ??
 

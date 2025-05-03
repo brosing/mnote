@@ -1,9 +1,9 @@
 <script lang="ts">
   import { Trash } from "phosphor-svelte";
-  import { decode } from "html-entities";
   import cn from "clsx";
   import type { NoteHistoryItemStore } from "$lib/store/note-history-store";
   import Dialog from "./dialog.svelte";
+  import { selectFirstLine } from "$lib/utils/selector";
 
   interface Props {
     item: NoteHistoryItemStore;
@@ -12,10 +12,8 @@
     isSelected: boolean;
   }
   let { item, onSelect, onDelete, isSelected }: Props = $props();
-  const encodedContent = decode(item.content)
-    .slice(0, 100)
-    .replace(/(<([^>]+)>)/gi, " ")
-    .trim();
+
+  const encodedContent = selectFirstLine(item.content);
   const parsedTime = new Date(item.createdAt)
     .toLocaleString()
     .split(":")
@@ -46,12 +44,12 @@
 
       {#snippet content()}
         <div class="text-sm text-center">
-          Are you sure you want to delete this note? This action cannot be
-          undone.
+          Are you sure you want to delete this note? <br>
+          This action cannot be undone.
 
           <div class="mt-6 text-center">
             <button
-              class="rounded-md bg-red-500 px-6 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+              class="rounded-md bg-red-500 px-6 py-2 font-semibold text-white hover:bg-red-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
               onclick={() => onDelete(item.id)}
             >
               Delete

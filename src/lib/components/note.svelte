@@ -5,6 +5,7 @@
   import QuillMarkdown from "quilljs-markdown";
   import "quill/dist/quill.snow.css";
   import { watch } from "runed";
+  import DOMPurify from 'dompurify';
 
   let quill: Quill;
   let editorElement: HTMLDivElement;
@@ -37,7 +38,7 @@
     // Initialize markdown support
     new QuillMarkdown(quill);
     if (content) {
-      quill.root.innerHTML = content;
+      quill.root.innerHTML = DOMPurify.sanitize(content);
     }
 
     // Handle content changes
@@ -104,7 +105,7 @@
   })
 
   watch(() => noteID, () => {
-    quill.root.innerHTML = content;
+    quill.root.innerHTML = DOMPurify.sanitize(content);
     quill.blur();
   });
 </script>

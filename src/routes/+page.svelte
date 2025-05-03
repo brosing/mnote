@@ -11,37 +11,52 @@
   } from "$lib/store/note-history-store";
   import NoteHistory from "$lib/components/note-history.svelte";
   import Options from "$lib/components/options.svelte";
+  import Dialog from "$lib/components/dialog.svelte";
+  import NoteSearch from "$lib/components/note-search.svelte";
 
   const DEFAULT_ID = "NEW_NOTE";
   const EMPTY_CONTENT = "<p><br></p>";
 
-  const noteID = new PersistedState("note-id", DEFAULT_ID, { storage: "local" });
+  const noteID = new PersistedState("note-id", DEFAULT_ID, {
+    storage: "local",
+  });
   const noteText = new PersistedState("note-content", "", { storage: "local" });
 
   let history = $state<NoteHistoryItemStore[]>([]);
   let isFocus = $state(false);
   let isSidebarOpen = $state(false);
+  let isFindNoteOpen = $state(false);
 
-  onMount(async () => {
-    const loadedVal = await noteHistory.load();
-    if (loadedVal) {
-      history = loadedVal;
+  const handleKeydown = (e: KeyboardEvent) => {
+    // Check for Cmd/Ctrl + F
+    if ((e.metaKey || e.ctrlKey) && e.key === "f") {
+      e.preventDefault();
+      isFindNoteOpen = !isFindNoteOpen;
     }
+  };
+
+  onMount(() => {
+    noteHistory.load().then((value) => {
+      if (value) history = value;
+    });
+
+    window.addEventListener("keydown", handleKeydown);
+    return () => window.removeEventListener("keydown", handleKeydown);
   });
 
   const updateHistoryNote = useDebounce(async () => {
     history = await noteHistory.update(noteID.current, noteText.current);
   }, 1000);
 
+  function resetNote() {
+    noteText.current = "";
+    noteID.current = DEFAULT_ID;
+  }
+
   function handleContentNote(text: string) {
     if (noteText.current === text) return;
     noteText.current = text;
     updateHistoryNote();
-  }
-
-  function resetNote() {
-    noteText.current = "";
-    noteID.current = DEFAULT_ID;
   }
 
   async function handleNewNote() {
@@ -76,6 +91,19 @@
 <!-- Draggable title bar -->
 <div class="drag-region" data-tauri-drag-region></div>
 
+<!-- Find Note -->
+<Dialog bind:open={isFindNoteOpen}>
+  {#snippet content()}
+    <NoteSearch
+      {history}
+      onSelectNote={(note) => {
+        handleChangeNote(note);
+        isFindNoteOpen = false;
+      }}
+    />
+  {/snippet}
+</Dialog>
+
 <!-- Container -->
 <div class="flex gap-12 h-screen overflow-x-hidden">
   {#if isSidebarOpen}
@@ -99,10 +127,15 @@
         "h-[calc(100%-52px)] w-[340px] absolute top-9 -left-[340px] overflow-y-auto no-scrollbar",
         "bg-zinc-100 dark:bg-zinc-800 choco:bg-amber-100 p-4 rounded-lg transition duration-200 ease-out",
         isFocus ? "" : "group-hover:translate-x-[356px]",
-        isSidebarOpen ? "shadow-2xl" : "",
+        isSidebarOpen ? "shadow-2xl" : ""
       )}
     >
-      <NoteHistory {history} noteID={noteID.current} {handleChangeNote} {handleDeleteNote} />
+      <NoteHistory
+        {history}
+        noteID={noteID.current}
+        {handleChangeNote}
+        {handleDeleteNote}
+      />
     </div>
   </div>
 
@@ -148,7 +181,7 @@
         "h-[calc(100%-52px)] w-[340px] absolute top-9 -right-[340px]",
         "bg-zinc-100 dark:bg-zinc-800 choco:bg-amber-100 p-4 rounded-lg transition duration-200 ease-out",
         isFocus ? "" : "group-hover:-translate-x-[356px]",
-        isSidebarOpen ? "shadow-2xl" : "",
+        isSidebarOpen ? "shadow-2xl" : ""
       )}
     >
       <Options />

@@ -11,7 +11,6 @@ pub fn run() {
     let migrations = migrations::get_migrations(); // <-- Use the imported function
 
     tauri::Builder::default()
-        // .plugin(tauri_plugin_sql::Builder::new().build())
         .plugin(
             tauri_plugin_sql::Builder::default()
                 .add_migrations("sqlite:note-history.db", migrations)
