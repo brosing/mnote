@@ -211,4 +211,20 @@
   :global(.ql-toolbar.ql-snow.hidden) {
     display: none;
   }
+
+  :global([data-leading="leading-tight"] .ql-editor) {
+    line-height: 1.25;
+  }
+  :global([data-leading="leading-snug"] .ql-editor) {
+    line-height: 1.375;
+  }
+  :global([data-leading="leading-normal"] .ql-editor) {
+    line-height: 1.5;
+  }
+  :global([data-leading="leading-relaxed"] .ql-editor) {
+    line-height: 1.625;
+  }
+  :global([data-leading="leading-loose"] .ql-editor) {
+    line-height: 2;
+  }
 </style>

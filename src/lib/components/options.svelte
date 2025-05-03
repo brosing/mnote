@@ -59,7 +59,6 @@
   });
 
   const lineHeights = [
-    { value: "leading-none", label: "None (1)" },
     { value: "leading-tight", label: "Tight (1.25)" },
     { value: "leading-snug", label: "Snug (1.375)" },
     { value: "leading-normal", label: "Normal (1.5)" },
@@ -184,7 +183,7 @@
                 'flex-shrink-0 h-7 flex items-center justify-center snap-center transition-all cursor-pointer',
                 fontSize.current === size ? 'font-semibold text-foreground' : 'text-zinc-600 dark:text-zinc-300 choco:text-amber-800/80',
               )}
-              onclick={() => (fontSize.current = size)}
+              onclick={(e) => (fontSize.current = size)}
             >
               {size.replace("px", " pixel")}
             </button>
@@ -279,9 +278,6 @@
     font-size: var(--base-font-size, 16px);
   }
 
-  :global([data-leading="leading-none"]) {
-    line-height: 1;
-  }
   :global([data-leading="leading-tight"]) {
     line-height: 1.25;
   }
