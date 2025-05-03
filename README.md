@@ -18,7 +18,7 @@ A minimalist note-taking app built with Tauri and Svelte, inspired by Freewrite'
 - **Dark Mode**: Easy on the eyes for night writing
 - **Custom Fonts**: Multiple font options including system, Lato, Nunito, Manrope, and more
 - **Note History**: Keep track of your writing sessions
-- **Cross-platform**: Built with Tauri, runs natively on macOS, Windows, and Linux
+- **Cross-platform**: Built with Tauri, runs on macOS, Windows, & Linux
 - **Markdown Support**: Support write in markdown, see it rendered beautifully
 
 ## 🚀 Current Progress
@@ -26,11 +26,11 @@ A minimalist note-taking app built with Tauri and Svelte, inspired by Freewrite'
 ### Completed Features
 
 #### Core Features
-- ✅ Rich text editor with Markdown support
+- ✅ Rich text editor with Markdown writing support
 - ✅ Note history management
-- ✅ Theme switching Light - Dark - Chocolate
-- ✅ Custom Font Family, Size & Line Height
-- ✅ Focus mode with Pomodoro like timer
+- ✅ Theme switching: Light - Dark - Chocolate
+- ✅ Custom font family, font size & line height
+- ✅ Focus mode: Pomodoro like timer with adjustable time
 
 #### Left Bar - Folder & History
 - ✅ Histor: sorting by creation date & updated date
@@ -57,4 +57,3 @@ A minimalist note-taking app built with Tauri and Svelte, inspired by Freewrite'
 - **Database**: SQLite
 - **Styling**: TailwindCSS & Bits-UI
 - **Editor**: Quill.js with Markdown support
-```
