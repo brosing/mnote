@@ -4,7 +4,7 @@
 
 ![mnote](ss.png)
 
-A minimalist note-taking app built with Tauri and Svelte, inspired by Freewrite's distraction-free writing experience.
+A minimalist note-taking app built with Tauri and Svelte, inspired by Freewrite's distraction-free writing experience. 
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Made with Tauri](https://img.shields.io/badge/Made%20with-Tauri-blue)](https://tauri.app)
@@ -15,7 +15,7 @@ A minimalist note-taking app built with Tauri and Svelte, inspired by Freewrite'
 ## ✨ Features
 
 - **Focus Mode**: Distraction-free writing environment
-- **Dark Mode**: Easy on the eyes for night writing
+- **Themes**: Easy on the eyes for night writing & more
 - **Custom Fonts**: Multiple font options including system, Lato, Nunito, Manrope, and more
 - **Note History**: Keep track of your writing sessions
 - **Cross-platform**: Built with Tauri, runs on macOS, Windows, & Linux
@@ -32,9 +32,10 @@ A minimalist note-taking app built with Tauri and Svelte, inspired by Freewrite'
 - ✅ Custom font family, font size & line height
 - ✅ Focus mode: Pomodoro like timer with adjustable time
 - ✅ Search with shortcuts (Cmd / Ctrl + F)
+- ✅ Bulk delete notes
 
 #### Left Bar - Folder & History
-- ✅ Histor: sorting by creation date & updated date
+- ✅ History: sorting by creation date & updated date
 
 ### Under Development
 
