@@ -74,6 +74,17 @@ function createNoteHistory() {
     return load();
   }
 
+  async function deleteByIds(ids: string[]) {
+    if (!ids.length) return load();
+    const db = await getDb();
+    const placeholders = ids.map(() => '?').join(',');
+    await db.execute(
+      `DELETE FROM note_history WHERE id IN (${placeholders})`,
+      ids
+    );
+    return load();
+  }
+
   return {
     load,
     get,
@@ -81,6 +92,7 @@ function createNoteHistory() {
     update,
     clear,
     delete: deleteById,
+    deleteMany: deleteByIds
   };
 }
 

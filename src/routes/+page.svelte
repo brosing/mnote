@@ -83,9 +83,13 @@
     noteText.current = note.content;
   }
 
-  async function handleDeleteNote(id: string) {
-    history = await noteHistory.delete(id);
-    if (noteID.current === id) resetNote();
+  async function handleDeleteNotes(ids: string | string[]) {
+    if (ids instanceof Array) {
+      history = await noteHistory.deleteMany(ids);
+    } else {
+      history = await noteHistory.delete(ids);
+    }
+    if (noteID.current === ids) resetNote();
   }
   
   let showComplete = $state(false);
@@ -144,7 +148,7 @@
         {history}
         noteID={noteID.current}
         {handleChangeNote}
-        {handleDeleteNote}
+        {handleDeleteNotes}
       />
     </div>
   </div>
@@ -161,7 +165,7 @@
     <!-- adding before to handle chocolate variant that need to have opacity on the background -->
     <div
       class={cn(
-        "fixed bottom-4 left-1/2 -translate-x-1/2 p-2 pl-5 shadow-xl overflow-y-auto no-scrollbar bg-white dark:bg-zinc-800 choco:bg-white before:absolute before:-inset-1 choco:before:bg-amber-600/40 before:rounded-full before:-z-10",
+        "fixed bottom-4 left-1/2 -translate-x-1/2 p-2 pl-6 shadow-xl overflow-y-auto no-scrollbar bg-white dark:bg-zinc-800 choco:bg-white before:absolute before:-inset-1 choco:before:bg-amber-600/40 before:rounded-full before:-z-10",
         "flex gap-6 justify-between items-center rounded-full transform duration-300 ease-in-out hover:opacity-100",
         isFocus || isSidebarOpen ? "opacity-0" : "opacity-100",
         showComplete && "scale-110"
