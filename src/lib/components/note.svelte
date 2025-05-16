@@ -18,9 +18,28 @@
 
   let { content, handleContent, noteID }: Props = $props()
 
+  const MOTIVATIONAL_QUOTES = [
+    "The only way to do great work is to love what you do.",
+    "Success is not final, failure is not fatal: it is the courage to continue that counts.",
+    "You are never too old to set another goal or to dream a new dream.",
+    "The future depends on what you do today.",
+    "Believe you can and you're halfway there.",
+    "Don't watch the clock; do what it does. Keep going.",
+    "The only limit to our realization of tomorrow will be our doubts of today.",
+    "Your time is limited, don't waste it living someone else's life.",
+    "The best way to predict the future is to create it.",
+    "Small progress is still progress."
+  ];
+
+  const generateQuote = () => {
+    const randomIndex = Math.floor(Math.random() * MOTIVATIONAL_QUOTES.length);
+    return MOTIVATIONAL_QUOTES[randomIndex];
+  }
+
   onMount(() => {
     quill = new Quill(editorElement, {
       theme: "snow",
+      placeholder: generateQuote(),
       modules: {
         toolbar: [
           [{ header: [1, 2, 3, false] }],
@@ -106,6 +125,9 @@
 
   watch(() => noteID, () => {
     quill.root.innerHTML = DOMPurify.sanitize(content);
+    if (quill && quill.root) {
+      quill.root.dataset.placeholder = generateQuote();
+    }
     quill.blur();
   });
 </script>
@@ -227,5 +249,17 @@
   }
   :global([data-leading="leading-loose"] .ql-editor) {
     line-height: 2;
+  }
+
+  :global(.ql-editor.ql-blank::before) {
+    font-style: normal;
+    left: 6px;
+    @apply text-zinc-400;
+  }
+  :global(.dark .ql-editor.ql-blank::before) {
+    @apply text-zinc-600;
+  }
+  :global(.choco .ql-editor.ql-blank::before) {
+    @apply text-amber-700/50;
   }
 </style>

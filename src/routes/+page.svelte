@@ -48,8 +48,9 @@
     history = await noteHistory.update(noteID.current, noteText.current);
   }, 1000);
 
+
   function resetNote() {
-    noteText.current = "";
+    noteText.current = '';
     noteID.current = DEFAULT_ID;
   }
 
@@ -90,6 +91,8 @@
     }
     if (noteID.current === ids) resetNote();
   }
+
+  $inspect(history)
 </script>
 
 <!-- Draggable title bar -->

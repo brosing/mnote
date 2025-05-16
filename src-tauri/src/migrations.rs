@@ -16,7 +16,14 @@ pub fn get_migrations() -> Vec<Migration> {
         Migration {
             version: 2,
             description: "add_updatedAt_column",
-            sql: "ALTER TABLE note_history ADD COLUMN updatedAt INTEGER;",
+            sql: "SELECT CASE 
+                    WHEN COUNT(*) = 0 THEN
+                        'ALTER TABLE note_history ADD COLUMN updatedAt INTEGER;'
+                    ELSE
+                        'SELECT 1;'
+                END as sql_to_execute
+                FROM pragma_table_info('note_history')
+                WHERE name = 'updatedAt';",
             kind: MigrationKind::Up,
         },
     ]
