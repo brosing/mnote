@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { X } from "phosphor-svelte";
   import { Dialog, Separator } from "bits-ui";
   import type { Snippet } from "svelte";
 

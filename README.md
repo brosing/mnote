@@ -44,7 +44,7 @@ A minimalist note-taking app built with Tauri and Svelte, inspired by Freewrite'
 - 🔄 Basic Notes Support (Other than journaling)
 
 #### Right Bar - Options
-- 🔄 Lofi player
+- 🔄 Ambient / Lofi player
 - 🔄 Export options
 
 #### Other - Options

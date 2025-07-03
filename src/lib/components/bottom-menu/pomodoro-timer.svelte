@@ -41,6 +41,7 @@
     }
 
     if (isFocus) {
+      
       isFocus = false;
       clearInterval(interval!);
       interval = null;
